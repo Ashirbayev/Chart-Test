@@ -1,0 +1,8 @@
+<mat-form-field>
+  <mat-label>Выберите период</mat-label>
+  <mat-select [(value)]="selectedPeriod" (selectionChange)="onPeriodChange()">
+    <mat-option value="week">Неделя</mat-option>
+    <mat-option value="month">Месяц</mat-option>
+    <mat-option value="year">Год</mat-option>
+  </mat-select>
+</mat-form-field>
