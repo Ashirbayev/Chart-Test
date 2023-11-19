@@ -1,2 +1,26 @@
 <app-period-selector (periodChange)="onPeriodChange($event)"></app-period-selector>
+<mat-form-field>
+  <mat-label>Выберите тип графики</mat-label>
+  <mat-select  [(ngModel)]="selectedChartType" (selectionChange)="onChartTypeChange($event)">
+    <mat-option value="bar">Столбчатая</mat-option>
+    <mat-option value="line">Линейная</mat-option>
+    <mat-option value="pie">Круговая</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<mat-form-field>
+  <mat-label>Выберите начало</mat-label>
+  <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" (ngModelChange)="onDateChange()">
+  <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+  <mat-datepicker #startDatePicker></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Выберите конец</mat-label>
+  <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" (ngModelChange)="onDateChange()">
+  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+  <mat-datepicker #endDatePicker></mat-datepicker>
+</mat-form-field>
+
 <canvas id="myChart"></canvas>

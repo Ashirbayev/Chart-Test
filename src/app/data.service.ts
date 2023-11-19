@@ -25,32 +25,37 @@ export class DataService {
     return this.allData;
   }
 
-  getDataForPeriod(period: string) {
-    const currentDate = new Date();
-    let startDate: Date;
+  getDataForDateRange(period: string, startDate?: Date, endDate?: Date) {
+    console.log(period)
+    console.log(startDate)
+    console.log(endDate)
+    let currentDate = new Date();
+    let calculatedStartDate: Date;
 
     switch (period) {
       case 'week':
-        startDate = new Date(currentDate);
-        startDate.setDate(currentDate.getDate() - 7);
+        calculatedStartDate = startDate || new Date(currentDate.setDate(currentDate.getDate() - 7));
         break;
       case 'month':
-        startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+        calculatedStartDate = startDate || new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
         break;
       case 'year':
-        startDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+        calculatedStartDate = startDate || new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
         break;
       default:
-        startDate = new Date(currentDate);
-        startDate.setDate(currentDate.getDate() - 7);
+        calculatedStartDate = startDate || new Date(currentDate.setDate(currentDate.getDate() - 7));
         break;
     }
 
+    const calculatedEndDate = endDate || currentDate;
+    const calculatedStartDates = startDate || calculatedStartDate;
+
     return this.allData.filter(entry => {
       const entryDate = new Date(entry.date);
-      return entryDate >= startDate && entryDate <= currentDate;
+      return entryDate >= calculatedStartDates && entryDate <= calculatedEndDate;
     });
   }
+
 
 
 }

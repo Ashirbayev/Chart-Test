@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { Chart, registerables } from 'chart.js/auto';
+type ValidChartType = 'bar' | 'line' | 'pie' ;
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,9 @@ import { Chart, registerables } from 'chart.js/auto';
 export class AppComponent implements OnInit {
   selectedPeriod: string = 'month';
   myChart: Chart | undefined;
+  selectedChartType: ValidChartType = 'bar';
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 
   constructor(private dataService: DataService) {}
 
@@ -19,8 +24,20 @@ export class AppComponent implements OnInit {
   }
 
   onPeriodChange(period: string) {
-
     this.selectedPeriod = period;
+    this.drawChart();
+  }
+
+
+  onChartTypeChange(event: any) {
+    console.log(event)
+    const chartType = event.value as ValidChartType;
+    this.selectedChartType = chartType;
+    this.drawChart();
+  }
+
+  onDateChange() {
+    console.log(11)
     this.drawChart();
   }
 
@@ -29,11 +46,11 @@ export class AppComponent implements OnInit {
       this.myChart.destroy();
     }
 
-    const data = this.dataService.getDataForPeriod(this.selectedPeriod);
+    const data = this.dataService.getDataForDateRange(this.selectedPeriod, this.startDate, this.endDate);
 
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     this.myChart = new Chart(ctx, {
-      type: 'bar',
+      type: this.selectedChartType,
       data: {
         labels: data.map((entry) => entry.date.toDateString()),
         datasets: [
